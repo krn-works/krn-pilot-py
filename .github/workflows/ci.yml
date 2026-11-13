@@ -1,0 +1,16 @@
+name: CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+
+permissions:
+  contents: read
+
+jobs:
+  ci:
+    uses: krn-works/krn/.github/workflows/project-ci.yml@0464f655d97a591b22275e4bc242f0a4df0e4b84
+    with:
+      install: "python3 -m venv .venv && .venv/bin/python -m pip install -q babel -e '.[tests]' && .venv/bin/pybabel --quiet compile --directory src/humanize/locale --domain humanize"
+      test: ".venv/bin/python -m pytest"

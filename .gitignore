@@ -34,3 +34,5 @@ dmypy.json
 .idea/
 
 # hatch-vcs
+.krn/
+.venv/
