@@ -90,6 +90,35 @@ def test_intcomma_large_integer(sign: int) -> None:
     assert humanize.intcomma(value) == expected
 
 
+@pytest.mark.parametrize(
+    "value, ndigits, expected",
+    [
+        (1e16, None, "10,000,000,000,000,000.0"),
+        (1.5e20, None, "150,000,000,000,000,000,000.0"),
+        (1e22, None, "10,000,000,000,000,000,000,000.0"),
+        (0.00001, None, "0.00001"),
+        (-1.5e16, None, "-15,000,000,000,000,000.0"),
+        (1e15, None, "1,000,000,000,000,000.0"),
+        (1234567.25, None, "1,234,567.25"),
+        (1e16, 0, "10,000,000,000,000,000"),
+        (1000, None, "1,000"),
+    ],
+)
+def test_intcomma_float_fixed_notation(
+    value: float, ndigits: int | None, expected: str
+) -> None:
+    assert humanize.intcomma(value, ndigits) == expected
+
+
+def test_intcomma_float_fixed_notation_locale() -> None:
+    try:
+        humanize.i18n.activate("de_DE")
+        assert humanize.intcomma(1.5e20) == "150.000.000.000.000.000.000,0"
+        assert humanize.intcomma(0.00001) == "0,00001"
+    finally:
+        humanize.i18n.deactivate()
+
+
 def test_intword_powers() -> None:
     # make sure that powers & human_powers have the same number of items
     assert len(number.powers) == len(number.human_powers)

@@ -1,7 +1,11 @@
 {
   "id": "t-q863hfx",
-  "status": "open",
-  "resolution": null,
+  "status": "closed",
+  "resolution": {
+    "kind": "done",
+    "ref": null,
+    "note": "intcomma writes floats in fixed notation"
+  },
   "created": "2026-11-13",
   "priority": 1,
   "title": "intcomma groups floats of 1e16 and above, and tiny floats, instead of printing exponents",
