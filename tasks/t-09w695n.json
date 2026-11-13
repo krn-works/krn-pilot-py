@@ -1,7 +1,11 @@
 {
   "id": "t-09w695n",
-  "status": "open",
-  "resolution": null,
+  "status": "closed",
+  "resolution": {
+    "kind": "done",
+    "ref": null,
+    "note": "metric carries rounding into quetta and scientific notation"
+  },
   "created": "2026-11-13",
   "priority": 1,
   "title": "metric carries a rounded-up value into quetta and into scientific notation without an extra digit",
