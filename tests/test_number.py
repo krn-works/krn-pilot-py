@@ -400,3 +400,21 @@ def test_fractional_integer_beyond_float_range() -> None:
     assert humanize.fractional(big) == str(big)
     assert humanize.fractional(-big) == "-" + str(big)
     assert humanize.fractional(1.5) == "1 1/2"
+
+
+@pytest.mark.parametrize(
+    ("value", "kwargs", "expected"),
+    [
+        (10**100 - 10**93, {}, "1.0 googol"),
+        (10**100 - 10**98, {}, "1.0 googol"),
+        (-(10**100 - 10**93), {}, "-1.0 googol"),
+        (10**100 - 10**93, {"format": "%.0f"}, "1 googol"),
+        (10**100, {}, "1.0 googol"),
+        (10**33, {}, "1.0 decillion"),
+        (10**36, {}, "1000.0 decillion"),
+        (999_999_999, {}, "1.0 billion"),
+        (1000, {}, "1.0 thousand"),
+    ],
+)
+def test_intword_googol_carry(value: int, kwargs: dict[str, str], expected: str) -> None:
+    assert humanize.intword(value, **kwargs) == expected

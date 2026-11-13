@@ -283,7 +283,13 @@ def intword(value: NumberOrString, format: str = "%.1f") -> str:
     chopped = value / power
     rounded_value = float(format % chopped)
 
-    if not largest_ordinal and rounded_value == powers[ordinal + 1] // power:
+    if not largest_ordinal and powers[ordinal + 1] > 1000 * power:
+        # The powers list jumps from 10**33 to 10**100, so the adjacent carry below
+        # never fires. Decide it from the exact (integer) count in the next unit.
+        if float(format % (value / powers[ordinal + 1])) >= 1:
+            ordinal += 1
+            rounded_value = 1.0
+    elif not largest_ordinal and rounded_value == powers[ordinal + 1] // power:
         # After rounding, we end up just at the next power. Compare against the
         # integer ratio between the two powers instead of ``rounded_value * power``:
         # for values above ~10**22 the latter is evaluated in floating point and
