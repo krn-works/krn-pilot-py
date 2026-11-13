@@ -1,0 +1,14 @@
+{
+  "hooks": {
+    "Stop": [
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": "command -v krn >/dev/null 2>&1 || { while read -r _; do :; done; echo 'krn is not on PATH: the KRN Stop hook cannot check this tree; put krn on PATH for this session' >&2; exit 2; }; exec krn hook stop"
+          }
+        ]
+      }
+    ]
+  }
+}

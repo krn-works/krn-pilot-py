@@ -1,0 +1,7 @@
+{
+  "base": "main",
+  "install": "python3 -m venv .venv && .venv/bin/python -m pip install -q babel -e '.[tests]' && .venv/bin/pybabel --quiet compile --directory src/humanize/locale --domain humanize",
+  "test": ".venv/bin/python -m pytest",
+  "related": ".venv/bin/python -m pytest {files}",
+  "tracker": "krn"
+}
