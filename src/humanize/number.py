@@ -197,6 +197,13 @@ def intcomma(value: NumberOrString, ndigits: int | None = None) -> str:
 
     if ndigits is not None:
         result = f"{value:,.{ndigits}f}"
+    elif isinstance(value, float):
+        from decimal import Decimal
+
+        # Shortest repr digits in fixed notation, never an exponent.
+        result = format(Decimal(repr(float(value))), ",f")
+        if "." not in result:
+            result += ".0"
     else:
         result = f"{value:,}"
     if thousands_sep != "," or decimal_sep != ".":
