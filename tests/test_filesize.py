@@ -74,10 +74,19 @@ import humanize
         ([3000, False, True, "%.3f"], "2.930K"),
         ([3000000000, False, True, "%.0f"], "3G"),
         ([10**26 * 30, True, False, "%.3f"], "2.423 RiB"),
-        ([1.123456789], "1 Bytes"),
+        ([1.123456789], "1.1 Bytes"),
+        ([1.5], "1.5 Bytes"),
+        ([0.5], "0.5 Bytes"),
+        ([1.5, False, True], "1.5B"),
+        ([1.5, True], "1.5 Bytes"),
+        ([1], "1 Byte"),
+        ([300], "300 Bytes"),
+        ([300.0], "300 Bytes"),
+        ([1, False, True], "1B"),
+        ([1500], "1.5 kB"),
         ([1.123456789 * 10**3], "1.1 kB"),
         ([1.123456789 * 10**6], "1.1 MB"),
-        ([1.123456789, False, True], "1B"),
+        ([1.123456789, False, True], "1.1B"),
         ([1.123456789 * 10**3, False, True], "1.1K"),
         ([1.123456789 * 10**6, False, True], "1.1M"),
         # Rounding must not leave the mantissa at the base while a larger suffix
@@ -101,3 +110,15 @@ def test_naturalsize(test_args: list[int] | list[int | bool], expected: str) -> 
         test_args[0] = f"-{test_args[0]}"
 
     assert humanize.naturalsize(*test_args) == "-" + expected
+
+
+@pytest.mark.parametrize(
+    ("test_args", "expected"),
+    [
+        ([-1.5], "-1.5 Bytes"),
+        ([-1.5, False, True], "-1.5B"),
+        ([0], "0 Bytes"),
+    ],
+)
+def test_naturalsize_sign_and_zero(test_args: list[float], expected: str) -> None:
+    assert humanize.naturalsize(*test_args) == expected

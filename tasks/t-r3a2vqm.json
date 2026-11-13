@@ -1,7 +1,11 @@
 {
   "id": "t-r3a2vqm",
-  "status": "open",
-  "resolution": null,
+  "status": "closed",
+  "resolution": {
+    "kind": "done",
+    "ref": null,
+    "note": "naturalsize keeps the fraction of non-integral byte counts below the base; tests added"
+  },
   "created": "2026-11-13",
   "priority": 1,
   "title": "naturalsize keeps the fraction of non-integer byte counts below the base",

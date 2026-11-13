@@ -94,6 +94,10 @@ def naturalsize(
     if abs_bytes == 1 and not gnu:
         return _("%d Byte") % int(bytes_)
 
+    if abs_bytes < base and not bytes_.is_integer() and abs_bytes == abs_bytes:
+        number = format % bytes_
+        return f"{number}B" if gnu else _("%s Bytes") % number
+
     if abs_bytes < base:
         return f"{int(bytes_)}B" if gnu else _("%d Bytes") % int(bytes_)
 
