@@ -377,3 +377,26 @@ def test_clamp(test_args: list[typing.Any], expected: str) -> None:
 )
 def test_metric(test_args: list[typing.Any], expected: str) -> None:
     assert humanize.metric(*test_args) == expected
+
+
+def test_ordinal_integer_beyond_float_range() -> None:
+    big = 10**400
+    assert humanize.ordinal(big) == str(big) + "th"
+    assert humanize.ordinal(big + 1) == str(big + 1) + "st"
+    assert humanize.ordinal(-big) == "-" + str(big) + "th"
+    assert humanize.ordinal(3) == "3rd"
+    assert humanize.ordinal(float("inf")) == "+Inf"
+
+
+def test_apnumber_integer_beyond_float_range() -> None:
+    big = 10**400
+    assert humanize.apnumber(big) == str(big)
+    assert humanize.apnumber(-big) == str(-big)
+    assert humanize.apnumber(5) == "five"
+
+
+def test_fractional_integer_beyond_float_range() -> None:
+    big = 10**400
+    assert humanize.fractional(big) == str(big)
+    assert humanize.fractional(-big) == "-" + str(big)
+    assert humanize.fractional(1.5) == "1 1/2"
