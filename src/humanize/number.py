@@ -131,7 +131,7 @@ def ordinal(value: NumberOrString, gender: str = "male") -> str:
     import math
 
     try:
-        if not math.isfinite(float(value)):
+        if not isinstance(value, int) and not math.isfinite(float(value)):
             return _format_not_finite(float(value))
         value = int(value)
     except (TypeError, ValueError):
@@ -330,7 +330,7 @@ def apnumber(value: NumberOrString) -> str:
     import math
 
     try:
-        if not math.isfinite(float(value)):
+        if not isinstance(value, int) and not math.isfinite(float(value)):
             return _format_not_finite(float(value))
         value = int(value)
     except (TypeError, ValueError):
@@ -381,6 +381,8 @@ def fractional(value: NumberOrString) -> str:
     """
     import math
 
+    if isinstance(value, int):
+        return str(int(value))
     try:
         number = float(value)
         if not math.isfinite(number):
