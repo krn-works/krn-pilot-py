@@ -882,3 +882,34 @@ def test_time_unit() -> None:
 )
 def test_rounding_by_fmt(fmt: str, value: float, expected: float) -> None:
     assert time._rounding_by_fmt(fmt, value) == pytest.approx(expected)
+
+
+@freeze_time("2026-11-14")
+@pytest.mark.parametrize(
+    "value, kwargs, expected",
+    [
+        ("2026-11-13", {}, "yesterday"),
+        ("2026-11-15T09:30:00", {}, "tomorrow"),
+        ("2026-11-14T23:59:59+00:00", {}, "today"),
+        ("2026-11-10", {"format": "%d.%m"}, "10.11"),
+        ("hello", {}, "hello"),
+        ("", {}, ""),
+    ],
+)
+def test_naturalday_iso_string(
+    value: str, kwargs: dict[str, str], expected: str
+) -> None:
+    assert humanize.naturalday(value, **kwargs) == expected
+
+
+@freeze_time("2026-11-14")
+@pytest.mark.parametrize(
+    "value, expected",
+    [
+        ("2026-11-13", "yesterday"),
+        ("2025-01-02", "Jan 02 2025"),
+        ("hello", "hello"),
+    ],
+)
+def test_naturaldate_iso_string(value: str, expected: str) -> None:
+    assert humanize.naturaldate(value) == expected
