@@ -1,7 +1,11 @@
 {
   "id": "t-t4cd2c3",
-  "status": "open",
-  "resolution": null,
+  "status": "closed",
+  "resolution": {
+    "kind": "done",
+    "ref": null,
+    "note": "naturalsize writes the locale decimal separator"
+  },
   "created": "2026-11-14",
   "priority": 2,
   "title": "naturalsize writes the locale decimal separator",

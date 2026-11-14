@@ -6,6 +6,7 @@ __lazy_modules__ = {"humanize.i18n"}
 
 from humanize.i18n import _gettext as _
 from humanize.i18n import _gettext_noop as N_
+from humanize.i18n import decimal_separator
 
 suffixes = {
     "decimal": (
@@ -34,6 +35,12 @@ suffixes = {
     ),
     "gnu": "KMGTPEZYRQ",
 }
+
+
+def _localize(number: str) -> str:
+    """Write the active locale's decimal separator into a formatted number."""
+    separator = decimal_separator()
+    return number if separator == "." else number.replace(".", separator)
 
 
 def naturalsize(
@@ -95,7 +102,7 @@ def naturalsize(
         return _("%d Byte") % int(bytes_)
 
     if abs_bytes < base and not bytes_.is_integer() and abs_bytes == abs_bytes:
-        number = format % bytes_
+        number = _localize(format % bytes_)
         return f"{number}B" if gnu else _("%s Bytes") % number
 
     if abs_bytes < base:
@@ -111,5 +118,5 @@ def naturalsize(
     if exp < len(suffix) and abs(float(format % (abs_bytes / (base**exp)))) >= base:
         exp += 1
     space = "" if gnu else " "
-    ret: str = format % (bytes_ / (base**exp)) + space + _(suffix[exp - 1])
+    ret: str = _localize(format % (bytes_ / (base**exp))) + space + _(suffix[exp - 1])
     return ret

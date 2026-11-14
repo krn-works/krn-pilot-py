@@ -122,3 +122,27 @@ def test_naturalsize(test_args: list[int] | list[int | bool], expected: str) -> 
 )
 def test_naturalsize_sign_and_zero(test_args: list[float], expected: str) -> None:
     assert humanize.naturalsize(*test_args) == expected
+
+
+@pytest.mark.parametrize(
+    "locale, args, kwargs, expected",
+    [
+        ("fr_FR", (1_500_000,), {}, "1,5 Mo"),
+        ("fr_FR", (1_500_000,), {"format": "%.2f"}, "1,50 Mo"),
+        ("fr_FR", (1_500_000,), {"gnu": True}, "1,4M"),
+        ("de_DE", (1_500_000,), {}, "1,5 MB"),
+        ("fr_FR", (3_000_000,), {"format": "%.0f"}, "3 Mo"),
+        (None, (1_500_000,), {}, "1.5 MB"),
+        (None, (1_500_000,), {"gnu": True}, "1.4M"),
+    ],
+)
+def test_naturalsize_locale_decimal_separator(
+    locale: str | None, args: tuple, kwargs: dict, expected: str
+) -> None:
+    if locale:
+        humanize.i18n.activate(locale)
+    try:
+        assert humanize.naturalsize(*args, **kwargs) == expected
+    finally:
+        humanize.i18n.deactivate()
+    assert humanize.naturalsize(1_500_000) == "1.5 MB"
