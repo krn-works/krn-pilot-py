@@ -322,7 +322,21 @@ def _convert_aware_datetime(
     return value
 
 
-def naturalday(value: dt.date | dt.datetime, format: str = "%b %d") -> str:
+def _parse_iso(value: object) -> object:
+    """Convert an ISO 8601 string to date/datetime; return anything else unchanged."""
+    import datetime as dt
+
+    if not isinstance(value, str):
+        return value
+    for parser in (dt.datetime.fromisoformat, dt.date.fromisoformat):
+        try:
+            return parser(value)
+        except ValueError:
+            continue
+    return value
+
+
+def naturalday(value: dt.date | dt.datetime | str, format: str = "%b %d") -> str:
     """Return a natural day.
 
     For date values that are tomorrow, today or yesterday compared to
@@ -332,6 +346,7 @@ def naturalday(value: dt.date | dt.datetime, format: str = "%b %d") -> str:
     """
     import datetime as dt
 
+    value = _parse_iso(value)
     try:
         # When value is a tz-aware datetime, compute "today" in that timezone
         # so the comparison uses the correct local date.
@@ -360,10 +375,11 @@ def naturalday(value: dt.date | dt.datetime, format: str = "%b %d") -> str:
     return value.strftime(format)
 
 
-def naturaldate(value: dt.date | dt.datetime) -> str:
+def naturaldate(value: dt.date | dt.datetime | str) -> str:
     """Like `naturalday`, but append a year for dates more than ~five months away."""
     import datetime as dt
 
+    value = _parse_iso(value)
     original_value = value
     try:
         if isinstance(value, dt.datetime) and value.tzinfo is not None:

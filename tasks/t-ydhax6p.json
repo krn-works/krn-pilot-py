@@ -1,7 +1,11 @@
 {
   "id": "t-ydhax6p",
-  "status": "open",
-  "resolution": null,
+  "status": "closed",
+  "resolution": {
+    "kind": "done",
+    "ref": null,
+    "note": "naturalday and naturaldate accept ISO 8601 strings"
+  },
   "created": "2026-11-14",
   "priority": 2,
   "title": "naturalday and naturaldate accept ISO 8601 strings",
