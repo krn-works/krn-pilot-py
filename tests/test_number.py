@@ -152,9 +152,9 @@ def test_intword_powers() -> None:
         (["3500000000000000000000"], "3.5 sextillion"),
         (["8100000000000000000000000000000000"], "8.1 decillion"),
         (["-8100000000000000000000000000000000"], "-8.1 decillion"),
-        ([1_000_000_000_000_000_000_000_000_000_000_000_000], "1000.0 decillion"),
-        ([1_100_000_000_000_000_000_000_000_000_000_000_000], "1100.0 decillion"),
-        ([2_100_000_000_000_000_000_000_000_000_000_000_000], "2100.0 decillion"),
+        ([1_000_000_000_000_000_000_000_000_000_000_000_000], "1" + "0" * 36),
+        ([1_100_000_000_000_000_000_000_000_000_000_000_000], "11" + "0" * 35),
+        ([2_100_000_000_000_000_000_000_000_000_000_000_000], "21" + "0" * 35),
         ([2e100], "2.0 googol"),
         ([None], "None"),
         (["1230000", "%0.2f"], "1.23 million"),
@@ -213,9 +213,26 @@ def test_intword_rounding_rollover() -> None:
         mantissa = float(rendered.split(" ", 1)[0])
         assert mantissa < 1000
 
-    # The documented decillion..googol gap must be left untouched.
-    assert humanize.intword(10**36) == "1000.0 decillion"
     assert humanize.intword(2 * 10**100) == "2.0 googol"
+
+
+@pytest.mark.parametrize(
+    "value, expected",
+    [
+        (10**36, "1000000000000000000000000000000000000"),
+        (10**50, "100000000000000000000000000000000000000000000000000"),
+        (-(10**50), "-100000000000000000000000000000000000000000000000000"),
+        (10**99 - 1, str(10**99 - 1)),
+        (999 * 10**33, "999.0 decillion"),
+        (10**35, "100.0 decillion"),
+        (10**100, "1.0 googol"),
+        (10**100 - 10**93, "1.0 googol"),
+        (-(10**100), "-1.0 googol"),
+        (10**101, "10.0 googol"),
+    ],
+)
+def test_intword_decillion_googol_gap(value: int, expected: str) -> None:
+    assert humanize.intword(value, format="%.1f") == expected
 
 
 @pytest.mark.parametrize(
@@ -447,7 +464,7 @@ def test_fractional_integer_beyond_float_range() -> None:
         (10**100 - 10**93, {"format": "%.0f"}, "1 googol"),
         (10**100, {}, "1.0 googol"),
         (10**33, {}, "1.0 decillion"),
-        (10**36, {}, "1000.0 decillion"),
+        (10**36, {}, "1" + "0" * 36),
         (999_999_999, {}, "1.0 billion"),
         (1000, {}, "1.0 thousand"),
     ],

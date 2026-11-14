@@ -1,7 +1,11 @@
 {
   "id": "t-j3t8x6g",
-  "status": "open",
-  "resolution": null,
+  "status": "closed",
+  "resolution": {
+    "kind": "done",
+    "ref": null,
+    "note": "intword falls back to plain integer from 10**36 up to a googol"
+  },
   "created": "2026-11-14",
   "priority": 2,
   "title": "intword returns the plain integer for values from 10**36 up to a googol",
