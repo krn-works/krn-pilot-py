@@ -296,6 +296,9 @@ def intword(value: NumberOrString, format: str = "%.1f") -> str:
         if float(format % (value / powers[ordinal + 1])) >= 1:
             ordinal += 1
             rounded_value = 1.0
+        elif value >= 10**36:
+            # No unit exists between decillion and googol: keep the plain integer.
+            return f"{negative_prefix}{value}"
     elif not largest_ordinal and rounded_value == powers[ordinal + 1] // power:
         # After rounding, we end up just at the next power. Compare against the
         # integer ratio between the two powers instead of ``rounded_value * power``:
