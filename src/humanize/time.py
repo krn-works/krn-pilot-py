@@ -336,12 +336,28 @@ def _parse_iso(value: object) -> object:
     return value
 
 
-def naturalday(value: dt.date | dt.datetime | str, format: str = "%b %d") -> str:
+_WEEKDAY_NAMES = (
+    "Monday",
+    "Tuesday",
+    "Wednesday",
+    "Thursday",
+    "Friday",
+    "Saturday",
+    "Sunday",
+)
+
+
+def naturalday(
+    value: dt.date | dt.datetime | str,
+    format: str = "%b %d",
+    weekday: bool = False,
+) -> str:
     """Return a natural day.
 
     For date values that are tomorrow, today or yesterday compared to
     present day return representing string. Otherwise, return a string
-    formatted according to `format`.
+    formatted according to `format`. With `weekday` true, dates 2 to 6 days
+    away are named "last <Weekday>" or "this <Weekday>" (English names).
 
     """
     import datetime as dt
@@ -371,6 +387,10 @@ def naturalday(value: dt.date | dt.datetime | str, format: str = "%b %d") -> str
 
     if delta.days == -1:
         return _("yesterday")
+
+    if weekday and 2 <= abs(delta.days) <= 6:
+        name = _WEEKDAY_NAMES[value.weekday()]
+        return f"last {name}" if delta.days < 0 else f"this {name}"
 
     return value.strftime(format)
 
