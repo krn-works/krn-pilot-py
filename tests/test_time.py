@@ -913,3 +913,26 @@ def test_naturalday_iso_string(
 )
 def test_naturaldate_iso_string(value: str, expected: str) -> None:
     assert humanize.naturaldate(value) == expected
+
+
+@freeze_time("2026-11-14")
+@pytest.mark.parametrize(
+    ("value", "kwargs", "expected"),
+    [
+        (dt.date(2026, 11, 12), {"weekday": True}, "last Thursday"),
+        (dt.date(2026, 11, 8), {"weekday": True}, "last Sunday"),
+        (dt.date(2026, 11, 16), {"weekday": True}, "this Monday"),
+        (dt.date(2026, 11, 20), {"weekday": True}, "this Friday"),
+        (dt.date(2026, 11, 7), {"weekday": True}, "Nov 07"),
+        (dt.date(2026, 11, 21), {"weekday": True}, "Nov 21"),
+        (dt.date(2026, 11, 13), {"weekday": True}, "yesterday"),
+        (dt.date(2026, 11, 14), {"weekday": True}, "today"),
+        (dt.date(2026, 11, 15), {"weekday": True}, "tomorrow"),
+        (dt.date(2026, 11, 12), {}, "Nov 12"),
+        (dt.date(2026, 11, 12), {"weekday": False}, "Nov 12"),
+    ],
+)
+def test_naturalday_weekday(
+    value: dt.date, kwargs: dict[str, bool], expected: str
+) -> None:
+    assert humanize.naturalday(value, **kwargs) == expected
