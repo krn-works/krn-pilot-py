@@ -1,7 +1,11 @@
 {
   "id": "t-9q9xr12",
-  "status": "open",
-  "resolution": null,
+  "status": "closed",
+  "resolution": {
+    "kind": "done",
+    "ref": null,
+    "note": "natural_list conjunction parameter added with tests"
+  },
   "created": "2026-11-14",
   "priority": 2,
   "title": "natural_list takes a conjunction parameter to join with or",
