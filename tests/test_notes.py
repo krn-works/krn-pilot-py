@@ -65,3 +65,10 @@ def test_clause_3_proof_note_5() -> None:
 def test_clause_4_proof_note_5() -> None:
     assert NOTE_5.exists()
     assert "t-03pvpwp" in NOTE_5.read_text()
+
+
+def test_clause_3_proof_note_5_no_duplicate_or_empty_note() -> None:
+    # boundary: exactly one note names this task, and none is empty
+    matches = list(NOTE_5.parent.glob("t-03pvpwp*"))
+    assert matches == [NOTE_5]
+    assert NOTE_5.read_text().strip() != ""
