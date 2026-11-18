@@ -1,0 +1,16 @@
+{
+  "id": "t-z0e8we9",
+  "status": "open",
+  "resolution": null,
+  "created": "2026-11-18",
+  "priority": 0,
+  "title": "Add proof note 11",
+  "after": [],
+  "body": [
+    "Outcome: docs/notes/ holds one new Markdown file named after this task id (for example docs/notes/t-abc1234.md) whose single line reads \"Proof note 11: <task id>\".",
+    "Why: a trivial delivery that counts receiver-side lane failures on a public outside repository (KRN t-aa6xy6t); change nothing else.",
+    "Proof: the new note file exists and names this task id."
+  ],
+  "kind": "chore",
+  "area": "docs"
+}
