@@ -20,3 +20,23 @@ def test_clause_3() -> None:
 def test_clause_4() -> None:
     assert NOTE.exists()
     assert "t-0zf6ehp" in NOTE.read_text()
+
+
+NOTE_4 = NOTE.parent / "t-2s70evn.md"
+
+
+def test_clause_1_proof_note_4() -> None:
+    assert NOTE_4.read_text().splitlines() == ["Proof note 4: t-2s70evn"]
+
+
+def test_clause_2_proof_note_4() -> None:
+    assert NOTE_4.read_text() == "Proof note 4: t-2s70evn\n"
+
+
+def test_clause_3_proof_note_4() -> None:
+    assert len(list(NOTE.parent.glob("t-2s70evn*"))) == 1
+
+
+def test_clause_4_proof_note_4() -> None:
+    assert NOTE_4.exists()
+    assert "t-2s70evn" in NOTE_4.read_text()
