@@ -40,3 +40,9 @@ def test_clause_3_proof_note_4() -> None:
 def test_clause_4_proof_note_4() -> None:
     assert NOTE_4.exists()
     assert "t-2s70evn" in NOTE_4.read_text()
+
+
+def test_clause_3_proof_note_4_no_duplicate_or_blank_line() -> None:
+    lines = NOTE_4.read_text().split("\n")
+    assert lines == ["Proof note 4: t-2s70evn", ""]
+    assert "" not in NOTE_4.read_text().splitlines()
